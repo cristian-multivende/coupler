@@ -17,14 +17,7 @@ class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
   constructor() {
     super(new ProductManagerAsyncHandler());
   }
-  /**
-   * 
-   * @param {string} processingSynchronizationStatus 
-   * @param {string} productLinkLogEntryType 
-   * @param {string} productLinkLogEntryCode 
-   * @param {*} productLinkLogEntry 
-   * @param {*} productLink 
-   */
+
   async updateProductLinkStatus(processingSynchronizationStatus, productLinkLogEntryType, productLinkLogEntryCode, productLinkLogEntry, productLink) {
     /** @type {any} */
     let updates = {
@@ -39,7 +32,9 @@ class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
     console.log(updates);
   }
 }
+
 (async () => {
+  console.log('Inicio exito-1-republish.test');
   try {
     let productLinks = [
 
@@ -53,23 +48,23 @@ class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
     let productManagerAsyncOnlyRead = new ProductManagerAsyncOnlyRead();
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
     let mongoConfig = {};
-    console.log("Attempt to connect");
     await mongoose.connect(dbUrl, mongoConfig);
 
     for (let productLink of productLinks) {
       console.log("productlink:", productLink);
-      //#PARAMETERS ZONE
       let task = {
-        MarketplaceConnectionId: "0f149a35-ff1b-4da6-a21d-3b2826caec65",
+        MarketplaceConnectionId: "", // MarketplaceConnectionId
         ProductLinkId: productLink,
-        //syncTaskType: "prducts-to-create"
       };
       await productManagerAsyncOnlyRead.productRepublish(task);
     }
 
-    console.log('FIN');
-    return true;
+    console.log("Fin exito-1-republish.test");
   } catch (error) {
-    console.log(error.stack);
+    console.error("exito-1-republish.test:");
+    console.error(error.stack ?? error.message);
+  } finally {
+    await mongoose.disconnect();
+    process.exit(0);
   }
 })();

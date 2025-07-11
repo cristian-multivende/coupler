@@ -11,13 +11,21 @@ i18n.configure({
   defaultLocale: 'es_CL'
 });
 
+
 const { ProductManagerAsync, ProductManagerAsyncHandler } = require("../../server/components/connect/marketplace/product-manager-async");
 
 class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
   constructor() {
     super(new ProductManagerAsyncHandler());
   }
-
+  /**
+   * 
+   * @param {string} processingSynchronizationStatus 
+   * @param {string} productLinkLogEntryType 
+   * @param {string} productLinkLogEntryCode 
+   * @param {*} productLinkLogEntry 
+   * @param {*} productLink 
+   */
   async updateProductLinkStatus(processingSynchronizationStatus, productLinkLogEntryType, productLinkLogEntryCode, productLinkLogEntry, productLink) {
     /** @type {any} */
     let updates = {
@@ -29,42 +37,41 @@ class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
       // @ts-ignore
       LastProductLinkLogEntryId: _.toString(productLinkLogEntry?._id)
     };
+    console.log("HERE WE UPDATE PRODUCT LINK WITH THIS INFORMATION ");
     console.log(updates);
   }
 }
-
 (async () => {
-  console.log('Inicio exito-1-create.test');
   try {
-    const productLinks = [ // productLinks
-
+    let productLinks = [
+      '764f9c44-aa92-465f-a87e-2b51c99db08d'
     ];
 
-    const masterSyncManager = require(`../../server/components/background-tasks/sync-manager/dequeue`);
+    //#END PARAMETERS ZONE
+    let masterSyncManager = require(`../../server/components/background-tasks/sync-manager/dequeue`);
     const SyncManagerFactory = require("../../server/utils/sync-manager-factory");
     const HookSyncManagerFactory = require("../../server/utils/hook-sync-manager-factory");
     await SyncManagerFactory.initializeFactory(masterSyncManager);
     await HookSyncManagerFactory.initializeFactory(masterSyncManager);
-    const productManagerAsyncOnlyRead = new ProductManagerAsyncOnlyRead();
+    let productManagerAsyncOnlyRead = new ProductManagerAsyncOnlyRead();
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
-    const mongoConfig = {};
+    let mongoConfig = {};
+    console.log("Attempt to connect");
     await mongoose.connect(dbUrl, mongoConfig);
 
-    for (const productlink of productLinks) {
+    for (let productlink of productLinks) {
       console.log("productlink:", productlink);
-      const task = {
-        MarketplaceConnectionId: "", // MarketplaceConnectionId
+      //#PARAMETERS ZONE
+      let task = {
+        MarketplaceConnectionId: "528874e4-bb45-46ab-985e-6fee40742525",
         ProductLinkId: productlink,
       };
-      await productManagerAsyncOnlyRead.productUpload(task);
+      await productManagerAsyncOnlyRead.productUpdate(task);
     }
 
-    console.log('Fin exito-1-create.test');
+    console.log('FIN');
+    return
   } catch (error) {
-    console.error("exito-1-create.test:");
-    console.log(error.stack ?? error.message);
-  } finally {
-    await mongoose.disconnect();
-    process.exit(0);
+    console.log(error.stack);
   }
 })();

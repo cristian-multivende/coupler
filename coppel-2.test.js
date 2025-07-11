@@ -1,0 +1,68 @@
+//@ts-check
+"use strict";
+import { MarketplaceSyncManagerNamespaces } from '../../server/components/background-tasks/sync-manager/core/marketplace-sync-manager/marketplace-sync-manager-namespaces';
+import { SyncManagerBrokerType } from '../../server/components/background-tasks/sync-manager/core/sync-manager/sync-manager-broker';
+import config from '../../server/config/environment';
+const { MarketplaceSyncManagerAsync } = require("../../server/components/background-tasks/sync-manager/core/marketplace-sync-manager-async/marketplace-sync-manager-async");
+import mongoose from "mongoose";
+import i18n from 'i18n';
+
+i18n.configure({
+  directory: __dirname + '/../../server/i18n',
+  prefix: 'locale_',
+  defaultLocale: 'es_CL'
+});
+
+(async () => {
+  try {
+
+    let marketplaceProvider = "coppel";
+    let splitLinkedProducts = false;
+
+    let MarketplaceConnectionId = "528874e4-bb45-46ab-985e-6fee40742525";
+    let collectionSize = 400;
+
+    //#END PARAMETERS ZONE
+
+    let priorityDictionary = {};
+    let connector = require(`../../server/components/connect/${marketplaceProvider}`);
+    let syncManagerMaster = require(`../../server/components/background-tasks/sync-manager/dequeue`);
+    let useRealConfirmation = false;
+    let syncManagerBrokerType = SyncManagerBrokerType.RASCAL;
+    let runWorkerConsumers = false;
+
+    let auxMarketplaceSyncManagerAsync = new MarketplaceSyncManagerAsync(marketplaceProvider, priorityDictionary, connector, syncManagerMaster, useRealConfirmation, syncManagerBrokerType, runWorkerConsumers);
+    const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
+    let mongoConfig = {};
+    console.log("Attempt to connect");
+    await mongoose.connect(dbUrl, mongoConfig);
+
+    // Inicio de ciclo para ejecutar múltiples jobs
+    const namespace = MarketplaceSyncManagerNamespaces.PRODUCTS;
+    const jobNames = [
+      "createTasksCollectionsForProductsCreate",
+      "createTasksCollectionsForProductsUpdate",
+      "createTasksCollectionsForProductStocksUpdate",
+      "createTasksCollectionsForProductPricesUpdate",
+      "createTasksCollectionsForProductPricesPromotionUpdate",
+      "createTasksCollectionsForProductsResynchronization",
+    ];
+    for (const jobName of jobNames) {
+      const scheduledJob = auxMarketplaceSyncManagerAsync.scheduledJobs[namespace][jobName];
+      await scheduledJob.perform({ MarketplaceConnectionId, interval: "1 minute", collectionSize, splitLinkedProducts });
+      console.log(`END OF COLLECTION CREATION for ${jobName}`);
+    }
+    console.log("FIN");
+  } catch (error) {
+    console.log(error.stack);
+  } finally {
+    await mongoose.disconnect();
+    process.exit(0);
+  }
+})();
+
+/*
+en "server/components/background-tasks/sync-manager/core/marketplace-sync-manager-async/marketplace-sync-manager-async.js"
+Comentar la línea 57.
+Cambiar la línea 62 a “false”.
+*/
