@@ -11,13 +11,21 @@ i18n.configure({
   defaultLocale: 'es_CL'
 });
 
+
 const { ProductManagerAsync, ProductManagerAsyncHandler } = require("../../server/components/connect/marketplace/product-manager-async");
 
 class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
   constructor() {
     super(new ProductManagerAsyncHandler());
   }
-
+  /**
+   * 
+   * @param {string} processingSynchronizationStatus 
+   * @param {string} productLinkLogEntryType 
+   * @param {string} productLinkLogEntryCode 
+   * @param {*} productLinkLogEntry 
+   * @param {*} productLink 
+   */
   async updateProductLinkStatus(processingSynchronizationStatus, productLinkLogEntryType, productLinkLogEntryCode, productLinkLogEntry, productLink) {
     /** @type {any} */
     let updates = {
@@ -29,16 +37,17 @@ class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
       // @ts-ignore
       LastProductLinkLogEntryId: _.toString(productLinkLogEntry?._id)
     };
+    console.log("HERE WE UPDATE PRODUCT LINK WITH THIS INFORMATION ");
     console.log(updates);
   }
 }
-
 (async () => {
   try {
     let productLinks = [
-
+      '002b9ef2-afa4-434e-84df-f5859ad445a5'
     ];
 
+    //#END PARAMETERS ZONE
     let masterSyncManager = require(`../../server/components/background-tasks/sync-manager/dequeue`);
     const SyncManagerFactory = require("../../server/utils/sync-manager-factory");
     const HookSyncManagerFactory = require("../../server/utils/hook-sync-manager-factory");
@@ -47,23 +56,28 @@ class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
     let productManagerAsyncOnlyRead = new ProductManagerAsyncOnlyRead();
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
     let mongoConfig = {};
+    console.log("Attempt to connect");
     await mongoose.connect(dbUrl, mongoConfig);
 
-    for (const productlink of productLinks) {
-      console.log("productlink:", productlink);
-      const task = {
-        MarketplaceConnectionId: "0f149a35-ff1b-4da6-a21d-3b2826caec65",
+    for (let productlink of productLinks) {
+      console.log("productlink----> ", productlink);
+      //#PARAMETERS ZONE
+      let task = {
+        MarketplaceConnectionId: "8f12a651-e207-4a75-9e8a-84f6548f3e6f",
         ProductLinkId: productlink,
+        //syncTaskType: "prducts-to-create"
       };
-      await productManagerAsyncOnlyRead.productUpload(task);
+      await productManagerAsyncOnlyRead.productUpdate(task);
     }
 
-    console.log('Fin exito-1-create.test');
+
+    console.log('FIN');
+
+    // server/components/background-tasks/sync-manager/core/marketplace-sync-manager-async/marketplace-sync-manager-async.js
+
+
+    return true;
   } catch (error) {
-    console.error("exito-1-create.test: Error occurred");
-    console.log(error.stack ?? error.message);
-  } finally {
-    await mongoose.disconnect();
-    process.exit(0);
+    console.log(error.stack);
   }
 })();
