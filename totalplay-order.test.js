@@ -32,7 +32,7 @@ import * as totalplay from '../../server/components/connect/totalplay';
     mongoose.connect(dbUrl, options);
 
     // Orden
-    let task = {
+    const task = {
       MerchantId: '',
       MarketplaceConnectionId: '',
       OrderId: '',
@@ -43,7 +43,8 @@ import * as totalplay from '../../server/components/connect/totalplay';
 
     console.log("Fin totalplay-order.test");
   } catch (error) {
-    console.error(error);
+    console.error("Error totalplay-order.test:");
+    console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
     process.exit(0);

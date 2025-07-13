@@ -6,6 +6,7 @@ i18n.configure({
   prefix: 'locale_',
   defaultLocale: 'es_CL'
 });
+const initSyncManagers = require('./initSyncManagers');
 
 // Importaciones
 import * as ripley from '../../server/components/connect/ripley-v2';
@@ -40,7 +41,9 @@ import * as ripley from '../../server/components/connect/ripley-v2';
     await ripley.handleOrderNotification(task);
     //
 
+    console.log("Fin ripley-order.test");
   } catch (error) {
+    console.error("Error ripley-order.test:");
     console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();

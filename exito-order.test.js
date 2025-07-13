@@ -6,6 +6,7 @@ i18n.configure({
   prefix: 'locale_',
   defaultLocale: 'es_CL'
 });
+const initSyncManagers = require('./initSyncManagers');
 
 // Importaciones
 import * as exito from '../../server/components/connect/exito';
@@ -31,7 +32,7 @@ import * as exito from '../../server/components/connect/exito';
     mongoose.connect(dbUrl, options);
 
     // Orden
-    let task = {
+    const task = {
       MerchantId: '',
       MarketplaceConnectionId: "",
       OrderId: '',
@@ -42,7 +43,8 @@ import * as exito from '../../server/components/connect/exito';
 
     console.log("Fin exito-order.test");
   } catch (error) {
-    console.error(error);
+    console.error("Error exito-order.test:");
+    console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
     process.exit(0);

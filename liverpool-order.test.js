@@ -32,7 +32,7 @@ import * as liverpool from '../../server/components/connect/liverpool';
     mongoose.connect(dbUrl, options);
 
     // Orden
-    let task = {
+    const task = {
       MerchantId: '',
       MarketplaceConnectionId: '',
       OrderId: '',
@@ -40,9 +40,11 @@ import * as liverpool from '../../server/components/connect/liverpool';
 
     await liverpool.handleOrderNotification(task);
     //
+    
     console.log("Fin liverpool-order.test");
   } catch (error) {
-    console.error(error);
+    console.error("Error liverpool-order.test:");
+    console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
     process.exit(0);

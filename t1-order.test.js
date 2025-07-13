@@ -32,7 +32,7 @@ import * as t1 from '../../server/components/connect/t1';
     mongoose.connect(dbUrl, options);
 
     // Orden
-    let task = {
+    const task = {
       MerchantId: '',
       MarketplaceConnectionId: '',
       OrderId: '',
@@ -43,7 +43,8 @@ import * as t1 from '../../server/components/connect/t1';
 
     console.log("Fin t1-order.test");
   } catch (error) {
-    console.error(error);
+    console.error("Error t1-order.test:");
+    console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
     process.exit(0);

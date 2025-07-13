@@ -32,17 +32,22 @@ import * as walmart from '../../server/components/connect/walmart';
     mongoose.connect(dbUrl, options);
 
     // Test
-    let task = {
-      MerchantId: '872146f3-1221-4c3e-8986-b2f9d9575d2e',
-      MarketplaceConnectionId: "7915c2ee-6a1a-4621-9f58-3c8bef71e672",
-      OrderId: '600000022495527',
-      orderType: 'FULLFILMENT'
+    const task = {
+      MerchantId: '',
+      MarketplaceConnectionId: '',
+      OrderId: '',
+      orderType: ''
     };
 
     await walmart.handleOrderNotification(task);
     //
-    console.log("Fin del test");
+
+    console.log("Fin walmart-order.test");
   } catch (error) {
-    console.error(error);
+    console.error("Error walmart-order.test:");
+    console.error(error.stack ?? error.message);
+  } finally {
+    await mongoose.disconnect();
+    process.exit(0);
   }
 })();

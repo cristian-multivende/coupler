@@ -9,16 +9,16 @@ i18n.configure({
 const initSyncManagers = require('./initSyncManagers');
 
 // Importaciones
-import * as dafiti from '../../server/components/connect/dafiti-v2';
+import * as mercadolibre from '../../server/components/connect/mercadolibre-v2';
 //
 
 (async () => {
   await initSyncManagers();
 
   try {
-    console.log("Inicio dafiti-order.test");
+    console.log("Inicio mercadolibre-order.test");
 
-    const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
+    const dbUrl = 'mongodb://127.0.0.1:27000,127.0.0.1:27001,127.0.0.1:27002/im-prod?replicaSet=rs';
     let options = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -31,19 +31,19 @@ import * as dafiti from '../../server/components/connect/dafiti-v2';
     mongoose.Promise = global.Promise;
     mongoose.connect(dbUrl, options);
 
-    // Orden
-    const task = {
+    // Test
+    let task = {
       MerchantId: '',
-      MarketplaceConnectionId: "",
+      MarketplaceConnectionId: '',
       OrderId: '',
     };
 
-    await dafiti.handleOrderNotification(task);
+    await mercadolibre.handleOrderNotification(task);
     //
 
-    console.log("Fin dafiti-order.test");
+    console.log("Fin mercadolibre-order.test");
   } catch (error) {
-    console.error("Error dafiti-order.test:");
+    console.error("Error mercadolibre-order.test:");
     console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();

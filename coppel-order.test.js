@@ -10,6 +10,7 @@ const initSyncManagers = require('./initSyncManagers');
 
 // Importaciones
 import * as coppel from '../../server/components/connect/coppel';
+//
 
 (async () => {
   await initSyncManagers();
@@ -30,11 +31,11 @@ import * as coppel from '../../server/components/connect/coppel';
     mongoose.Promise = global.Promise;
     mongoose.connect(dbUrl, options);
 
-    // Test
+    // Orden
     const task = {
-      MerchantId: 'be133293-15a1-4f01-822a-60428b07e2f8',
-      MarketplaceConnectionId: "6d686ff2-e9e5-49f4-941f-cc15209a2784",
-      OrderId: '302667060',
+      MerchantId: '',
+      MarketplaceConnectionId: '',
+      OrderId: '',
     };
 
     await coppel.handleOrderNotification(task);
@@ -42,7 +43,8 @@ import * as coppel from '../../server/components/connect/coppel';
 
     console.log("Fin coppel-order.test");
   } catch (error) {
-    console.error(error);
+    console.error("Error coppel-order.test:");
+    console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
     process.exit(0);

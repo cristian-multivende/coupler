@@ -32,9 +32,9 @@ import * as fcom from '../../server/components/connect/fcom';
     mongoose.connect(dbUrl, options);
 
     // Orden
-    let task = {
+    const task = {
       MerchantId: '',
-      MarketplaceConnectionId: "",
+      MarketplaceConnectionId: '',
       OrderId: '',
     };
 
@@ -43,7 +43,8 @@ import * as fcom from '../../server/components/connect/fcom';
 
     console.log("Fin falabella-order.test");
   } catch (error) {
-    console.error(error);
+    console.error("Error falabella-order.test:");
+    console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
     process.exit(0);
