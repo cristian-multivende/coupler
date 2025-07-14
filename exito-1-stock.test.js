@@ -53,8 +53,8 @@ class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
     for (let productlink of productLinks) {
       console.log("productlink:", productlink);
       //#PARAMETERS ZONE
-      let task = {
-        MarketplaceConnectionId: "", // MarketplaceConnectionId
+      const task = {
+        MarketplaceConnectionId: '', // MarketplaceConnectionId
         ProductLinkId: productlink,
       };
       await productManagerAsyncOnlyRead.productStockUpdate(task);

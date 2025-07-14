@@ -34,17 +34,23 @@ class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
 }
 
 (async () => {
-  console.log('Inicio exito-1-create.test');
+  const masterSyncManager = require(`../../server/components/background-tasks/sync-manager/dequeue`);
+  const SyncManagerFactory = require("../../server/utils/sync-manager-factory");
+  const HookSyncManagerFactory = require("../../server/utils/hook-sync-manager-factory");
+
+  await Promise.all([
+    SyncManagerFactory.initializeFactory(masterSyncManager),
+    HookSyncManagerFactory.initializeFactory(masterSyncManager)
+  ]);
+
   try {
-    const productLinks = [ // productLinks
+    console.log('Inicio exito-1-create.test');
+
+    // productLinks
+    const productLinks = [
 
     ];
 
-    const masterSyncManager = require(`../../server/components/background-tasks/sync-manager/dequeue`);
-    const SyncManagerFactory = require("../../server/utils/sync-manager-factory");
-    const HookSyncManagerFactory = require("../../server/utils/hook-sync-manager-factory");
-    await SyncManagerFactory.initializeFactory(masterSyncManager);
-    await HookSyncManagerFactory.initializeFactory(masterSyncManager);
     const productManagerAsyncOnlyRead = new ProductManagerAsyncOnlyRead();
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
     const mongoConfig = {};
@@ -52,8 +58,10 @@ class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
 
     for (const productlink of productLinks) {
       console.log("productlink:", productlink);
+
+      // MarketplaceConnectionId
       const task = {
-        MarketplaceConnectionId: "", // MarketplaceConnectionId
+        MarketplaceConnectionId: '',
         ProductLinkId: productlink,
       };
       await productManagerAsyncOnlyRead.productUpload(task);

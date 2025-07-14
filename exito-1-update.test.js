@@ -62,7 +62,7 @@ class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
     for (let productlink of productLinks) {
       console.log("productlink----> ", productlink);
       //#PARAMETERS ZONE
-      let task = {
+      const task = {
         MarketplaceConnectionId: "8f12a651-e207-4a75-9e8a-84f6548f3e6f",
         ProductLinkId: productlink,
         //syncTaskType: "prducts-to-create"

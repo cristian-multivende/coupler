@@ -52,8 +52,8 @@ class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
 
     for (let productLink of productLinks) {
       console.log("productlink:", productLink);
-      let task = {
-        MarketplaceConnectionId: "", // MarketplaceConnectionId
+      const task = {
+        MarketplaceConnectionId: '', // MarketplaceConnectionId
         ProductLinkId: productLink,
       };
       await productManagerAsyncOnlyRead.productRepublish(task);
