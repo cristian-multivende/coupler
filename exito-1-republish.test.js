@@ -3,68 +3,50 @@
 import config from '../../server/config/environment';
 import mongoose from "mongoose";
 import i18n from 'i18n';
-import _ from "lodash";
-
 i18n.configure({
   directory: __dirname + '/../../server/i18n',
   prefix: 'locale_',
   defaultLocale: 'es_CL'
 });
-
-const { ProductManagerAsync, ProductManagerAsyncHandler } = require("../../server/components/connect/marketplace/product-manager-async");
-
-class ProductManagerAsyncOnlyRead extends ProductManagerAsync {
-  constructor() {
-    super(new ProductManagerAsyncHandler());
-  }
-
-  async updateProductLinkStatus(processingSynchronizationStatus, productLinkLogEntryType, productLinkLogEntryCode, productLinkLogEntry, productLink) {
-    /** @type {any} */
-    let updates = {
-      synchronizationStatus: processingSynchronizationStatus,
-      externalContent: JSON.stringify({
-        type: productLinkLogEntryType,
-        code: productLinkLogEntryCode
-      }),
-      // @ts-ignore
-      LastProductLinkLogEntryId: _.toString(productLinkLogEntry?._id)
-    };
-    console.log(updates);
-  }
-}
+const initSyncManagers = require('./utils/initSyncManagers');
+const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../server/components/connect/marketplace/product-manager-async');
 
 (async () => {
-  console.log('Inicio exito-1-republish.test');
+  await initSyncManagers();
+
   try {
-    let productLinks = [
+    console.log('Inicio exito-1-republish.test');
+
+    const productManagerAsync = new ProductManagerAsync(new ProductManagerAsyncHandler(), true);
+
+    const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
+    await mongoose.connect(dbUrl, {});
+
+    //
+    const productLinks = [
 
     ];
 
-    let masterSyncManager = require(`../../server/components/background-tasks/sync-manager/dequeue`);
-    const SyncManagerFactory = require("../../server/utils/sync-manager-factory");
-    const HookSyncManagerFactory = require("../../server/utils/hook-sync-manager-factory");
-    await SyncManagerFactory.initializeFactory(masterSyncManager);
-    await HookSyncManagerFactory.initializeFactory(masterSyncManager);
-    let productManagerAsyncOnlyRead = new ProductManagerAsyncOnlyRead();
-    const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
-    let mongoConfig = {};
-    await mongoose.connect(dbUrl, mongoConfig);
-
-    for (let productLink of productLinks) {
-      console.log("productlink:", productLink);
+    for (const productlink of productLinks) {
+      console.log("productlink:", productlink);
       const task = {
-        MarketplaceConnectionId: '', // MarketplaceConnectionId
-        ProductLinkId: productLink,
+        MarketplaceConnectionId: '',
+        ProductLinkId: productlink,
       };
-      await productManagerAsyncOnlyRead.productRepublish(task);
+      await productManagerAsync.productRepublish(task);
     }
+    //
 
-    console.log("Fin exito-1-republish.test");
+    console.log('Fin exito-1-republish.test');
   } catch (error) {
-    console.error("exito-1-republish.test:");
-    console.error(error.stack ?? error.message);
+    console.error("Error exito-1-republish.test:");
+    console.log(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
     process.exit(0);
   }
 })();
+
+/*
+En "server/components/connect/marketplace/product-manager-async.js", comentar el "updateAttributes" en la función
+*/

@@ -23,7 +23,7 @@ const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../serve
     await mongoose.connect(dbUrl, {});
 
     //
-    let productLinks = [
+    const productLinks = [
 
     ];
 
