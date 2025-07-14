@@ -46,3 +46,7 @@ const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../serve
     process.exit(0);
   }
 })();
+
+/*
+En "server/components/connect/marketplace/product-manager-async.js", comentar el "updateAttributes" en la función "updateProductLinkStatus".
+*/
