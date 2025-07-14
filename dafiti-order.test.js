@@ -6,7 +6,7 @@ i18n.configure({
   prefix: 'locale_',
   defaultLocale: 'es_CL'
 });
-const initSyncManagers = require('./initSyncManagers');
+const initSyncManagers = require('./utils/initSyncManagers');
 
 // Importaciones
 import * as dafiti from '../../server/components/connect/dafiti-v2';
@@ -34,7 +34,7 @@ import * as dafiti from '../../server/components/connect/dafiti-v2';
     // Orden
     const task = {
       MerchantId: '',
-      MarketplaceConnectionId: "",
+      MarketplaceConnectionId: '',
       OrderId: '',
     };
 

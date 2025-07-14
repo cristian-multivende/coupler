@@ -6,7 +6,7 @@ i18n.configure({
   prefix: 'locale_',
   defaultLocale: 'es_CL'
 });
-const initSyncManagers = require('./initSyncManagers');
+const initSyncManagers = require('./utils/initSyncManagers');
 
 // Importaciones
 import * as mercadolibre from '../../server/components/connect/mercadolibre-v2';
@@ -19,17 +19,8 @@ import * as mercadolibre from '../../server/components/connect/mercadolibre-v2';
     console.log("Inicio mercadolibre-order.test");
 
     const dbUrl = 'mongodb://127.0.0.1:27000,127.0.0.1:27001,127.0.0.1:27002/im-prod?replicaSet=rs';
-    let options = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      sslValidate: config.mongodb.sslValidate,
-      sslCA: sslCA,
-      ssl: config.mongodb.ssl,
-      tlsAllowInvalidHostnames: config.mongodb.tlsAllowInvalidHostnames,
-    };
     mongoose.Promise = global.Promise;
-    mongoose.connect(dbUrl, options);
+    mongoose.connect(dbUrl, {});
 
     // Test
     let task = {

@@ -6,7 +6,7 @@ i18n.configure({
   prefix: 'locale_',
   defaultLocale: 'es_CL'
 });
-const initSyncManagers = require('./initSyncManagers');
+const initSyncManagers = require('./utils/initSyncManagers');
 
 // Importaciones
 import * as exito from '../../server/components/connect/exito';
@@ -19,22 +19,13 @@ import * as exito from '../../server/components/connect/exito';
     console.log("Inicio exito-order.test");
 
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
-    let options = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      sslValidate: config.mongodb.sslValidate,
-      sslCA: sslCA,
-      ssl: config.mongodb.ssl,
-      tlsAllowInvalidHostnames: config.mongodb.tlsAllowInvalidHostnames,
-    };
     mongoose.Promise = global.Promise;
-    mongoose.connect(dbUrl, options);
+    mongoose.connect(dbUrl, {});
 
     // Orden
     const task = {
       MerchantId: '',
-      MarketplaceConnectionId: "",
+      MarketplaceConnectionId: '',
       OrderId: '',
     };
 

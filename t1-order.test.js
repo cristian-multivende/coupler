@@ -6,7 +6,7 @@ i18n.configure({
   prefix: 'locale_',
   defaultLocale: 'es_CL'
 });
-const initSyncManagers = require('./initSyncManagers');
+const initSyncManagers = require('./utils/initSyncManagers');
 
 // Importaciones
 import * as t1 from '../../server/components/connect/t1';
@@ -19,15 +19,6 @@ import * as t1 from '../../server/components/connect/t1';
     console.log("Inicio t1-order.test");
 
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
-    let options = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      sslValidate: config.mongodb.sslValidate,
-      sslCA: sslCA,
-      ssl: config.mongodb.ssl,
-      tlsAllowInvalidHostnames: config.mongodb.tlsAllowInvalidHostnames,
-    };
     mongoose.Promise = global.Promise;
     mongoose.connect(dbUrl, options);
 
