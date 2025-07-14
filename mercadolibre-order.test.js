@@ -1,3 +1,5 @@
+//@ts-check
+"use strict";
 import config from '../../server/config/environment';
 import mongoose from "mongoose";
 import i18n from 'i18n';
@@ -18,8 +20,7 @@ import * as mercadolibre from '../../server/components/connect/mercadolibre-v2';
   try {
     console.log("Inicio mercadolibre-order.test");
 
-    const dbUrl = 'mongodb://127.0.0.1:27000,127.0.0.1:27001,127.0.0.1:27002/im-prod?replicaSet=rs';
-    mongoose.Promise = global.Promise;
+    const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
     mongoose.connect(dbUrl, {});
 
     // Test

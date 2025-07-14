@@ -1,3 +1,5 @@
+//@ts-check
+"use strict";
 import config from '../../server/config/environment';
 import mongoose from "mongoose";
 import i18n from 'i18n';
@@ -19,17 +21,7 @@ import * as dafiti from '../../server/components/connect/dafiti-v2';
     console.log("Inicio dafiti-order.test");
 
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
-    let options = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      sslValidate: config.mongodb.sslValidate,
-      sslCA: sslCA,
-      ssl: config.mongodb.ssl,
-      tlsAllowInvalidHostnames: config.mongodb.tlsAllowInvalidHostnames,
-    };
-    mongoose.Promise = global.Promise;
-    mongoose.connect(dbUrl, options);
+    mongoose.connect(dbUrl, {});
 
     // Orden
     const task = {

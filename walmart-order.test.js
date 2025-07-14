@@ -1,3 +1,5 @@
+//@ts-check
+"use strict";
 import config from '../../server/config/environment';
 import mongoose from "mongoose";
 import i18n from 'i18n';
@@ -19,8 +21,7 @@ import * as walmart from '../../server/components/connect/walmart';
     console.log("Inicio walmart-order.test");
 
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
-    mongoose.Promise = global.Promise;
-    mongoose.connect(dbUrl, options);
+    mongoose.connect(dbUrl, {});
 
     // Test
     const task = {

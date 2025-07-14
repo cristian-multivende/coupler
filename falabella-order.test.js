@@ -1,3 +1,5 @@
+//@ts-check
+"use strict";
 import config from '../../server/config/environment';
 import mongoose from "mongoose";
 import i18n from 'i18n';
@@ -19,7 +21,6 @@ import * as fcom from '../../server/components/connect/fcom';
     console.log("Inicio falabella-order.test");
 
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
-    mongoose.Promise = global.Promise;
     mongoose.connect(dbUrl, {});
 
     // Orden
