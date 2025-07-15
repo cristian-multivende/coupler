@@ -8,7 +8,7 @@ i18n.configure({
 });
 const initSyncManagers = require('./utils/initSyncManagers');
 
-// Importaciones
+//
 import * as paris from '../../server/components/connect/paris-v2/';
 //
 
@@ -21,7 +21,7 @@ import * as paris from '../../server/components/connect/paris-v2/';
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
     mongoose.connect(dbUrl, {});
 
-    // Task
+    //
     const task = {
       MarketplaceConnectionId: '',
       ProductId: '',
