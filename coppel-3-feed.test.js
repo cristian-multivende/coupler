@@ -42,7 +42,7 @@ i18n.configure({
     
     console.log("END OF FEED RESOLUTION");
   } catch (error) {
-    console.log(error.stack);
+    console.error(error.stack);
   }
 })();
 

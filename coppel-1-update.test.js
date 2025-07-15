@@ -40,7 +40,7 @@ const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../serve
     console.log('Fin coppel-1-update.test');
   } catch (error) {
     console.error("Error coppel-1-update.test:");
-    console.log(error.stack ?? error.message);
+    console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
     process.exit(0);

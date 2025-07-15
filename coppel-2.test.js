@@ -54,7 +54,7 @@ i18n.configure({
     }
     console.log("FIN");
   } catch (error) {
-    console.log(error.stack);
+    console.error(error.stack);
   } finally {
     await mongoose.disconnect();
     process.exit(0);

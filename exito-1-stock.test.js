@@ -40,7 +40,7 @@ const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../serve
     console.log('Fin exito-1-stock.test');
   } catch (error) {
     console.error("Error exito-1-stock.test:");
-    console.log(error.stack ?? error.message);
+    console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
     process.exit(0);

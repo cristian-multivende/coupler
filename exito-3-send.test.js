@@ -43,7 +43,7 @@ i18n.configure({
 
     console.log("END OF SEND COLLECTION");
   } catch (error) {
-    console.log(error.stack);
+    console.error(error.stack);
   } finally {
     await mongoose.disconnect();
     process.exit(0);
