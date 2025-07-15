@@ -10,7 +10,7 @@ i18n.configure({
 });
 const initSyncManagers = require('./utils/initSyncManagers');
 
-// Importaciones
+//
 import * as jumpseller from '../../server/components/connect/jumpseller';
 //
 
@@ -23,7 +23,7 @@ import * as jumpseller from '../../server/components/connect/jumpseller';
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
     await mongoose.connect(dbUrl, {});
 
-    // Orden
+    //
     const task = {
       MerchantId: '',
       MarketplaceConnectionId: '',

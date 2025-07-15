@@ -10,7 +10,7 @@ i18n.configure({
 });
 const initSyncManagers = require('./utils/initSyncManagers');
 
-// Importaciones
+//
 import * as coppel from '../../server/components/connect/coppel';
 //
 
@@ -23,7 +23,7 @@ import * as coppel from '../../server/components/connect/coppel';
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
     mongoose.connect(dbUrl, {});
 
-    // Orden
+    //
     const task = {
       MerchantId: '',
       MarketplaceConnectionId: '',

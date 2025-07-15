@@ -10,7 +10,7 @@ i18n.configure({
 });
 const initSyncManagers = require('./utils/initSyncManagers');
 
-// Importaciones
+//
 import * as amazon from '../../server/components/connect/amazon';
 //
 
@@ -23,7 +23,7 @@ import * as amazon from '../../server/components/connect/amazon';
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
     mongoose.connect(dbUrl, {});
 
-    // Orden
+    //
     const task = {
       MerchantId: '',
       MarketplaceConnectionId: '',

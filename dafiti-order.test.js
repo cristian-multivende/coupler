@@ -10,7 +10,7 @@ i18n.configure({
 });
 const initSyncManagers = require('./utils/initSyncManagers');
 
-// Importaciones
+//
 import * as dafiti from '../../server/components/connect/dafiti-v2';
 //
 
@@ -23,7 +23,7 @@ import * as dafiti from '../../server/components/connect/dafiti-v2';
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
     mongoose.connect(dbUrl, {});
 
-    // Orden
+    //
     const task = {
       MerchantId: '',
       MarketplaceConnectionId: '',
