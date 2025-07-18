@@ -42,3 +42,5 @@ import * as dafiti from '../../server/components/connect/dafiti-v2';
     process.exit(0);
   }
 })();
+
+// Hau un updateAttributes 'server/components/connect/dafiti-v2/dafiti-client.js' y handleLimitRequestApiCall

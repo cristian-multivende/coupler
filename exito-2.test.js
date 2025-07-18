@@ -31,7 +31,7 @@ const { MarketplaceSyncManagerAsync } = require("../../server/components/backgro
     await mongoose.connect(dbUrl, {});
     
     //
-    const MarketplaceConnectionId = "0f149a35-ff1b-4da6-a21d-3b2826caec65";
+    const MarketplaceConnectionId = '';
     const collectionSize = 400;
     const splitLinkedProducts = true;
     const namespace = MarketplaceSyncManagerNamespaces.PRODUCTS;

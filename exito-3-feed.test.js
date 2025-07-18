@@ -16,7 +16,7 @@ i18n.configure({
   try {
 
     let marketplaceProvider = "exito";
-    let MarketplaceConnectionId = "0f149a35-ff1b-4da6-a21d-3b2826caec65";
+    let MarketplaceConnectionId = '';
 
     let priorityDictionary = {};
     let connector = require(`../../server/components/connect/exito`);
@@ -47,15 +47,3 @@ i18n.configure({
     process.exit(0);
   }
 })();
-
-/*
-Borrar los
-updateAttributes de "server/components/connect/exito/hanlde-notifications-manager.js"
-
-en "server/components/background-tasks/sync-manager/core/marketplace-sync-manager-async/marketplace-sync-manager-async.js"
-Comentar la línea 57.
-Cambiar la línea 62 a “true”.
-
-en "server/components/connect/exito/exito-client.js"
-Comentar los "updateAttributes"
-*/

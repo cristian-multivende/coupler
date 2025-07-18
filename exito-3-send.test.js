@@ -17,7 +17,7 @@ i18n.configure({
   try {
 
     let marketplaceProvider = "exito";
-    let MarketplaceConnectionId = "0f149a35-ff1b-4da6-a21d-3b2826caec65";
+    let MarketplaceConnectionId = '';
 
     let priorityDictionary = {};
     let connector = require(`../../server/components/connect/${marketplaceProvider}`);
