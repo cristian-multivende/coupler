@@ -9,15 +9,15 @@ import * as crypto from '../../server/utils/crypto';
   try {
     const marketplaceConnection = await MarketplaceConnection.findOne({
       where: {
-        MerchantId: 'be133293-15a1-4f01-822a-60428b07e2f8', // calvin klein: 'cfed12d2-ac5b-45d5-a53a-20cd462cad68',
-        _id: '5611f961-45aa-41ce-b00b-bb0bf4076653', // calvin klein: '859bcdec-f729-4301-9416-93fbfb3e02ed',
+        MerchantId: '',
+        _id: '',
       },
       raw: true,
       nest: true
     });
 
     if (!marketplaceConnection) {
-      throw new Error("MarketplaceConnection not found.");
+      throw new Error("MarketplaceConnection not found");
     }
 
     const country = marketplaceConnection.country;
@@ -32,14 +32,13 @@ import * as crypto from '../../server/utils/crypto';
       marketplaceConnectionId
     );
 
-    const skuList = [
-      'MK3XUORODX',
+    const skuList = Array.from(new Set([
 
-    ];
+    ]));
 
-    // await updateStockToZero(parisAPIClient, skuList);
+    await updateStockToZero(parisAPIClient, skuList);
     await verifyStockIsZero(parisAPIClient, skuList);
-    console.log('FIN')
+    console.log('FIN');
   } catch (error) {
     console.error(error);
   }
@@ -51,37 +50,70 @@ async function updateStockToZero(parisAPIClient, skuList) {
     const product = await parisAPIClient.getStockSkus(sku, null);
     console.log('Producto obtenido para', sku, ':', JSON.stringify(product, null, 2));
 
-    const stockPayload = product.response.skus.map(item => ({ sku: item.sku, quantity: 0 }));
+    const stockPayload = product.response.skus.map((item) => ({ sku: item.sku, quantity: 0 }));
     const updateResponse = await parisAPIClient.upsertStock({ skus: stockPayload });
     console.log('Stock actualizado a 0 para variantes de', sku, ':', JSON.stringify(updateResponse, null, 2));
   }
 }
 
 async function verifyStockIsZero(parisAPIClient, skuList) {
-  const parentSkusWithStock = new Set();
+  const skusWithZeroStock = new Set();
+  const skusWithRemainingStock = new Set();
+  const skusFulfillment = new Set();
+  const skusWithErrors = new Set();
 
   for (const parentSku of skuList) {
-    const verification = await parisAPIClient.getStockSkus(parentSku, null);
-    console.log('Verificación stock para', parentSku, ':', JSON.stringify(verification.response.skus, null, 2));
-    
+    let verification;
+    try {
+      verification = await parisAPIClient.getStockSkus(parentSku, null);
+    } catch (error) {
+      console.error(`Error al consultar SKU ${parentSku}:`, error.message);
+      skusWithErrors.add(parentSku);
+      continue;
+    }
+
+    if (!verification.response?.skus || verification.response.skus.length === 0) {
+      console.warn(`No hay SKUs para el producto ${parentSku}, saltando...`);
+      skusWithErrors.add(parentSku);
+      continue;
+    }
+
     let allZero = true;
-    verification.response.skus.forEach(item => {
+    let hasFulfillmentWithStock = false;
+
+    verification.response.skus.forEach((item) => {
+      console.log(`SKU: ${item.sku}, Stock: ${item.quantity}, isFulfillment: ${item.isFulfillment}`);
       if (item.quantity !== 0) {
-        console.error(`Stock de ${item.sku} es ${item.quantity}, esperado 0`);
-        parentSkusWithStock.add(parentSku);
         allZero = false;
+        if (item.isFulfillment) {
+          hasFulfillmentWithStock = true;
+        }
       }
     });
-    
+
     if (allZero) {
-      console.log('Todas las variantes de', parentSku, 'tienen stock 0');
+      skusWithZeroStock.add(parentSku);
+    } else if (hasFulfillmentWithStock) {
+      skusFulfillment.add(parentSku);
+    } else {
+      skusWithRemainingStock.add(parentSku);
     }
   }
 
-  if (parentSkusWithStock.size > 0) {
-    console.log('\n=== SKUs padres que aún tienen stock ===');
-    [...parentSkusWithStock].forEach(sku => {
-      console.log(`${sku}`);
-    });
-  }
+  console.log('Resultados:');
+
+  console.log(`SKUs procesados [${skuList.length}]:`);
+  skuList.forEach((sku) => console.log(sku));
+
+  console.log(`SKUs sin stock [${skusWithZeroStock.size}]:`);
+  skusWithZeroStock.forEach((sku) => console.log(sku));
+
+  console.log(`SKUs con stock [${skusWithRemainingStock.size}]:`);
+  skusWithRemainingStock.forEach((sku) => console.log(sku));
+
+  console.log(`SKUs fulfillment [${skusFulfillment.size}]:`);
+  skusFulfillment.forEach((sku) => console.log(sku));
+
+  console.log(`SKUs con errores en consulta [${skusWithErrors.size}]:`);
+  skusWithErrors.forEach((sku) => console.log(sku));
 }
