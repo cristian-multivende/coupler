@@ -1,3 +1,4 @@
+"use strict";
 import config from '../../server/config/environment';
 import mongoose from "mongoose";
 import i18n from 'i18n';
@@ -23,9 +24,9 @@ import * as shopify from '../../server/components/connect/shopify-v2/';
 
     //
     const task = {
-      MarketplaceConnectionId: '422db70f-c3e6-42de-a045-33f5bf81cde0',
-      ProductId: 'a7fac736-1492-4f95-9daa-4123e813eebd',
-      ProductLinkId: '15d7111b-027f-4f6d-885c-bd0ba3fce24d',
+      MarketplaceConnectionId: '',
+      ProductId: '',
+      ProductLinkId: '',
     };
 
     // await shopify.productUpload(task);

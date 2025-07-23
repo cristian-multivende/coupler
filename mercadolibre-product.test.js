@@ -1,3 +1,5 @@
+//@ts-check
+"use strict";
 import config from '../../server/config/environment';
 import mongoose from "mongoose";
 import i18n from 'i18n';
@@ -27,9 +29,9 @@ import * as mercadolibre from '../../server/components/connect/mercadolibre-v2/'
       ProductLinkId: '',
     };
 
-    await mercadolibre.productUpdate(task);
     // await mercadolibre.productUpdate(task);
-    // await mercadolibre.productRepublish(task);
+    // await mercadolibre.productUpdate(task);
+    await mercadolibre.productRepublish(task);
     // await mercadolibre.productUnpublish(task);
     // await mercadolibre.cancelPublication(task);
     // await mercadolibre.productPriceUpdate(task);

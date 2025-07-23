@@ -15,11 +15,11 @@ import ExitoAPIClient from '../../server/components/connect/exito/exito-client';
   //
     const marketplaceConnection = await MarketplaceConnection.findOne({
       where: {
-        MerchantId: '068eb734-26e8-4e0c-94fc-dcac67ab6b66',
-        _id: '8f12a651-e207-4a75-9e8a-84f6548f3e6f',
+        MerchantId: '',
+        _id: '',
       },
       raw: true,
-      nest: true
+      nest: true,
     });
 
     if (marketplaceConnection == null)
@@ -37,7 +37,8 @@ import ExitoAPIClient from '../../server/components/connect/exito/exito-client';
     const response = await exitoAPIClient.getFeaturesbyCategoryId(27240);
 
     console.log('Respuesta:');
-    console.log(JSON.stringify(response, null, 2));
+    // console.log(JSON.stringify(response, null, 2));
+    console.log(response);
     //
 
     console.log("Fin exito-client.test");

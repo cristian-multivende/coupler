@@ -1,3 +1,4 @@
+//@ts-check
 "use strict";
 import config from '../../server/config/environment';
 import mongoose from "mongoose";
@@ -10,31 +11,29 @@ i18n.configure({
 const initSyncManagers = require('./utils/initSyncManagers');
 
 //
-import * as fcom from '../../server/components/connect/fcom';
+import * as exito from '../../server/components/connect/exito';
 //
 
 (async () => {
   await initSyncManagers();
 
   try {
-    console.log("Inicio falabella-order.test");
+    console.log("Inicio exito-polling.test");
 
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
     mongoose.connect(dbUrl, {});
 
     //
-    const task = {
-      MerchantId: '',
-      MarketplaceConnectionId: '',
-      OrderId: '',
-    };
+    const minutes = 120;
 
-    await fcom.handleOrderNotification(task);
+    await exito.handlePollingOrder('', (remoteOrders) => {
+      console.log(remoteOrders);
+    }, '* * * * *', minutes);
     //
 
-    console.log("Fin falabella-order.test");
+    console.log("Fin exito-polling.test");
   } catch (error) {
-    console.error("Error falabella-order.test:");
+    console.error("Error exito-polling.test:");
     console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
