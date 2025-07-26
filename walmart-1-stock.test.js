@@ -15,7 +15,7 @@ const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../serve
   await initSyncManagers();
 
   try {
-    console.log("Inicio exito-1-create.test");
+    console.log('Inicio walmart-1-stock.test');
 
     const productManagerAsync = new ProductManagerAsync(new ProductManagerAsyncHandler(), true);
 
@@ -33,13 +33,13 @@ const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../serve
         MarketplaceConnectionId: '',
         ProductLinkId: productlink,
       };
-      await productManagerAsync.productUpload(task);
+      await productManagerAsync.productStockUpdate(task);
     }
     //
 
-    console.log("Fin walmart-1-create.test");
+    console.log('Fin walmart-1-stock.test');
   } catch (error) {
-    console.error("Error walmart-1-create.test:");
+    console.error("Error walmart-1-stock.test:");
     console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
