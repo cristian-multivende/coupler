@@ -15,7 +15,7 @@ const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../serve
   await initSyncManagers();
 
   try {
-    console.log('Inicio exito-1-stock.test');
+    console.log("Inicio exito-1-stock.test");
 
     const productManagerAsync = new ProductManagerAsync(new ProductManagerAsyncHandler(), true);
 
@@ -24,7 +24,7 @@ const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../serve
 
     //
     const productLinks = [
-
+      '',
     ];
 
     for (const productlink of productLinks) {
@@ -37,7 +37,7 @@ const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../serve
     }
     //
 
-    console.log('Fin exito-1-stock.test');
+    console.log("Fin exito-1-stock.test");
   } catch (error) {
     console.error("Error exito-1-stock.test:");
     console.error(error.stack ?? error.message);
@@ -46,8 +46,3 @@ const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../serve
     process.exit(0);
   }
 })();
-
-/*
-En "server/components/connect/marketplace/product-manager-async.js", comentar el "updateAttributes" en la
-función "productStockUpdate" para evitar que se intente actualizar el producto en el catálogo de destino.
-*/

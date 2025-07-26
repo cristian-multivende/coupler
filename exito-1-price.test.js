@@ -15,7 +15,7 @@ const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../serve
   await initSyncManagers();
 
   try {
-    console.log("Inicio exito-1-update.test");
+    console.log("Inicio exito-1-price.test");
 
     const productManagerAsync = new ProductManagerAsync(new ProductManagerAsyncHandler(), true);
 
@@ -33,13 +33,13 @@ const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../serve
         MarketplaceConnectionId: '',
         ProductLinkId: productlink,
       };
-      await productManagerAsync.productUpdate(task);
+      await productManagerAsync.productPriceUpdate(task);
     }
     //
 
-    console.log("Fin exito-1-update.test");
+    console.log("Fin exito-1-price.test");
   } catch (error) {
-    console.error("Error exito-1-update.test:");
+    console.error("Error exito-1-price.test:");
     console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
