@@ -15,12 +15,12 @@ const { MarketplaceSyncManagerAsync } = require("../../server/components/backgro
 
 (async () => {
   try {
-    console.log("Inicio coppel-2.test");
+    console.log("Inicio walmart-2.test");
 
-    const marketplaceProvider = "coppel";
+    const marketplaceProvider = "walmart";
     const priorityDictionary = {};
     const connector = require(`../../server/components/connect/${marketplaceProvider}`);
-    const syncManagerMaster = require('../../server/components/background-tasks/sync-manager/dequeue');
+    const syncManagerMaster = require(`../../server/components/background-tasks/sync-manager/dequeue`);
     const useRealConfirmation = false;
     const syncManagerBrokerType = SyncManagerBrokerType.RASCAL;
     const runWorkerConsumers = false;
@@ -45,7 +45,6 @@ const { MarketplaceSyncManagerAsync } = require("../../server/components/backgro
       "createTasksCollectionsForProductPricesPromotionUpdate",
       "createTasksCollectionsForProductsResynchronization",
     ];
-
     for (const jobName of jobNames) {
       const scheduledJob = auxMarketplaceSyncManagerAsync.scheduledJobs[namespace][jobName];
       await scheduledJob.perform({ MarketplaceConnectionId, interval: "1 minute", collectionSize, splitLinkedProducts });
@@ -53,10 +52,10 @@ const { MarketplaceSyncManagerAsync } = require("../../server/components/backgro
     }
     //
 
-    console.log("Fin coppel-2.test");
+    console.error("Fin walmart-2.test");
   } catch (error) {
-    console.error("Error coppel-2.test:");
-    console.error(error.stack);
+    console.error("Error walmart-2.test:");
+    console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
     process.exit(0);

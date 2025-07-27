@@ -20,16 +20,16 @@ const { MarketplaceSyncManagerAsync } = require("../../server/components/backgro
     const marketplaceProvider = "exito";
     const priorityDictionary = {};
     const connector = require(`../../server/components/connect/${marketplaceProvider}`);
-    const syncManagerMaster = require(`../../server/components/background-tasks/sync-manager/dequeue`);
+    const syncManagerMaster = require('../../server/components/background-tasks/sync-manager/dequeue');
     const useRealConfirmation = false;
     const syncManagerBrokerType = SyncManagerBrokerType.RASCAL;
     const runWorkerConsumers = false;
-    
+
     const auxMarketplaceSyncManagerAsync = new MarketplaceSyncManagerAsync(marketplaceProvider, priorityDictionary, connector, syncManagerMaster, useRealConfirmation, syncManagerBrokerType, runWorkerConsumers);
-    
+
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
     await mongoose.connect(dbUrl, {});
-    
+
     //
     const MarketplaceConnectionId = '';
     const collectionSize = 400;

@@ -15,12 +15,12 @@ const { MarketplaceSyncManagerAsync } = require("../../server/components/backgro
 
 (async () => {
   try {
-    console.log("Inicio coppel-2.test");
+    console.log("Inicio liverpool-2.test");
 
-    const marketplaceProvider = "coppel";
+    const marketplaceProvider = "liverpool";
     const priorityDictionary = {};
     const connector = require(`../../server/components/connect/${marketplaceProvider}`);
-    const syncManagerMaster = require('../../server/components/background-tasks/sync-manager/dequeue');
+    const syncManagerMaster = require(`../../server/components/background-tasks/sync-manager/dequeue`);
     const useRealConfirmation = false;
     const syncManagerBrokerType = SyncManagerBrokerType.RASCAL;
     const runWorkerConsumers = false;
@@ -33,7 +33,7 @@ const { MarketplaceSyncManagerAsync } = require("../../server/components/backgro
     //
     const MarketplaceConnectionId = '';
     const collectionSize = 400;
-    const splitLinkedProducts = false;
+    const splitLinkedProducts = true;
     const namespace = MarketplaceSyncManagerNamespaces.PRODUCTS;
     const jobNames = [
       "createTasksCollectionsForProductsCreate",
@@ -53,10 +53,10 @@ const { MarketplaceSyncManagerAsync } = require("../../server/components/backgro
     }
     //
 
-    console.log("Fin coppel-2.test");
+    console.error("Fin liverpool-2.test");
   } catch (error) {
-    console.error("Error coppel-2.test:");
-    console.error(error.stack);
+    console.error("Error liverpool-2.test:");
+    console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
     process.exit(0);
@@ -64,7 +64,7 @@ const { MarketplaceSyncManagerAsync } = require("../../server/components/backgro
 })();
 
 /*
-en "server/components/background-tasks/sync-manager/core/marketplace-sync-manager-async/marketplace-sync-manager-async.js"
+en "server/components/background-tasks/sync-manager/core/marketplace-sync-manager-async/marketplace-sync-manager-async.js:57"
 Comentar la línea 57.
-Cambiar la línea 62 a “false”.
+Cambiar la línea 62 a false.
 */
