@@ -3,47 +3,46 @@
 import { MarketplaceSyncManagerNamespaces } from '../../server/components/background-tasks/sync-manager/core/marketplace-sync-manager/marketplace-sync-manager-namespaces';
 import { SyncManagerBrokerType } from '../../server/components/background-tasks/sync-manager/core/sync-manager/sync-manager-broker';
 import config from '../../server/config/environment';
-const { MarketplaceSyncManagerAsync } = require("../../server/components/background-tasks/sync-manager/core/marketplace-sync-manager-async/marketplace-sync-manager-async");
 import mongoose from "mongoose";
 import i18n from 'i18n';
-
 i18n.configure({
   directory: __dirname + '/../../server/i18n',
   prefix: 'locale_',
   defaultLocale: 'es_CL'
 });
 
+const { MarketplaceSyncManagerAsync } = require("../../server/components/background-tasks/sync-manager/core/marketplace-sync-manager-async/marketplace-sync-manager-async");
+
 (async () => {
   try {
+    console.log("Inicio exito-3-send.test");
 
-    let marketplaceProvider = "exito";
-    let MarketplaceConnectionId = '';
+    const marketplaceProvider = 'exito';
+    const priorityDictionary = {};
+    const connector = require(`../../server/components/connect/${marketplaceProvider}`);
+    const syncManagerMaster = require('../../server/components/background-tasks/sync-manager/dequeue');
+    const useRealConfirmation = false;
+    const syncManagerBrokerType = SyncManagerBrokerType.RASCAL;
+    const runWorkerConsumers = false;
 
-    let priorityDictionary = {};
-    let connector = require(`../../server/components/connect/${marketplaceProvider}`);
-    let syncManagerMaster = require(`../../server/components/background-tasks/sync-manager/dequeue`);
-    let useRealConfirmation = false;
-    let syncManagerBrokerType = SyncManagerBrokerType.RASCAL;
-    let runWorkerConsumers = false;
+    const auxMarketplaceSyncManagerAsync = new MarketplaceSyncManagerAsync(marketplaceProvider, priorityDictionary, connector, syncManagerMaster, useRealConfirmation, syncManagerBrokerType, runWorkerConsumers);
 
-    let auxMarketplaceSyncManagerAsync = new MarketplaceSyncManagerAsync(marketplaceProvider, priorityDictionary, connector, syncManagerMaster, useRealConfirmation, syncManagerBrokerType, runWorkerConsumers);
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
-    let mongoConfig = {};
+    await mongoose.connect(dbUrl, {});
 
-    console.log("Attempt to connect");
+    //
+    const MarketplaceConnectionId = '';
+    const namespace = MarketplaceSyncManagerNamespaces.PRODUCTS;
+    const jobName = "sendTasksSubCollectionsForProductSynchronization";
+    const scheduledJob = auxMarketplaceSyncManagerAsync.scheduledJobs[namespace][jobName];
 
-    await mongoose.connect(dbUrl, mongoConfig);
-
-    let namespace = MarketplaceSyncManagerNamespaces.PRODUCTS;
-    let jobName = "sendTasksSubCollectionsForProductSynchronization";
-    console.log(auxMarketplaceSyncManagerAsync);
-    let scheduledJob = auxMarketplaceSyncManagerAsync.scheduledJobs[namespace][jobName];
-    console.log("Scheduled job found:", scheduledJob);
     await scheduledJob.perform({ MarketplaceConnectionId, interval: "1 minute" });
+    //
 
-    console.log("END OF SEND COLLECTION");
+    console.log("Fin exito-3-send.test");
   } catch (error) {
-    console.error(error.stack);
+    console.error("Error exito-3-send.test:");
+    console.error(error.stack ?? error.message);
   } finally {
     await mongoose.disconnect();
     process.exit(0);
@@ -53,8 +52,6 @@ i18n.configure({
 /*
 Borrar los
 updateAttributes de "server/components/connect/exito/hanlde-notifications-manager.js"
-
-
 
 en "server/components/connect/exito/exito-client.js"
 Comentar los "updateAttributes"
