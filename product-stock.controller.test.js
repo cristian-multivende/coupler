@@ -23,19 +23,14 @@ import * as productStock from '../../server/api/product-stock/product-stock.cont
     //
     const req = {
       params: {
-        // productPriceListId: '85b45487-2005-471d-9de3-e6557b10b8f1',
-        productVersionId: '17ac7513-5721-4e37-a4fc-57ab1d8fe4b5',
+        productVersionId: '',
+        warehouseId: ''
       },
       body: [
         {
-          amount: 1000,
-          type: "DECREASE",
-          comment: "Venta de producto",
-          // ProductRelocationCategoryId: "uuid-de-categoría",
-          // OriginProviderId: "uuid-del-proveedor",
-          // CostCurrencyId: "uuid-de-moneda",
-          unitCost: 100,
-          // ProductStockBatchId: "uuid-de-batch"
+          amount: 1,
+          type: '',
+          comment: '',
         }
       ]
     };
