@@ -1,6 +1,6 @@
 //@ts-check
 "use strict";
-import { MarketplaceSyncManagerNamespaces } from '../../server/components/background-tasks/sync-manager/core/marketplace-sync-manager/marketplace-sync-manager-namespaces';
+import { MarketplaceSyncManagerNamespaces } from '../../server/components/background-tasks/sync-manager/core/marketplace-sync-manager/marketplace-sync-manager';
 import { SyncManagerBrokerType } from '../../server/components/background-tasks/sync-manager/core/sync-manager/sync-manager-broker';
 import config from '../../server/config/environment';
 import mongoose from "mongoose";
@@ -24,6 +24,8 @@ const { MarketplaceSyncManagerAsync } = require("../../server/components/backgro
     const useRealConfirmation = false;
     const syncManagerBrokerType = SyncManagerBrokerType.RASCAL;
     const runWorkerConsumers = false;
+
+    MarketplaceSyncManagerAsync.prototype.getSchedulerConfiguration = async () => ({});
 
     const auxMarketplaceSyncManagerAsync = new MarketplaceSyncManagerAsync(marketplaceProvider, priorityDictionary, connector, syncManagerMaster, useRealConfirmation, syncManagerBrokerType, runWorkerConsumers);
 

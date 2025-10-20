@@ -10,9 +10,9 @@ import ExitoAPIClient from '../../server/components/connect/exito/exito-client';
 
 (async () => {
   try {
-  console.log("Inicio exito-client.test");
+    console.log("Inicio exito-client.test");
 
-  //
+    //
     const marketplaceConnection = await MarketplaceConnection.findOne({
       where: {
         MerchantId: '',
@@ -29,12 +29,12 @@ import ExitoAPIClient from '../../server/components/connect/exito/exito-client';
     const refreshToken = crypto.decrypt(marketplaceConnection.refresh_token);
     const marketplaceConnectionId = marketplaceConnection._id;
     const country = marketplaceConnection.country;
-    
-    const exitoAPIClient = new ExitoAPIClient(
-      accessToken, refreshToken, marketplaceConnectionId, country
-    );
-    
-    const response = await exitoAPIClient.getFeaturesbyCategoryId(27240);
+
+    const exitoAPIClient = new ExitoAPIClient(accessToken, refreshToken, marketplaceConnectionId, country);
+
+    const categoryId = 27240;
+
+    const response = await exitoAPIClient.getFeaturesbyCategoryId(categoryId);
 
     console.log('Respuesta:');
     // console.log(JSON.stringify(response, null, 2));

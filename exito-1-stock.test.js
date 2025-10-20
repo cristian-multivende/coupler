@@ -17,7 +17,7 @@ const { ProductManagerAsync, ProductManagerAsyncHandler } = require('../../serve
   try {
     console.log("Inicio exito-1-stock.test");
 
-    const productManagerAsync = new ProductManagerAsync(new ProductManagerAsyncHandler(), true);
+    const productManagerAsync = new ProductManagerAsync(new ProductManagerAsyncHandler());
 
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
     await mongoose.connect(dbUrl, {});

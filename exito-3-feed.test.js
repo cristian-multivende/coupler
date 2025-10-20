@@ -25,6 +25,8 @@ const { MarketplaceSyncManagerAsync } = require("../../server/components/backgro
     const syncManagerBrokerType = SyncManagerBrokerType.RASCAL;
     const runWorkerConsumers = false;
 
+    MarketplaceSyncManagerAsync.prototype.getSchedulerConfiguration = async () => ({});
+
     const auxMarketplaceSyncManagerAsync = new MarketplaceSyncManagerAsync(marketplaceProvider, priorityDictionary, connector, syncManagerMaster, useRealConfirmation, syncManagerBrokerType, runWorkerConsumers);
 
     const dbUrl = process.env.MONGO_URL || config.mongodb.uri;
