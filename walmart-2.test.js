@@ -17,7 +17,7 @@ const { MarketplaceSyncManagerAsync } = require("../../server/components/backgro
   try {
     console.log("Inicio walmart-2.test");
 
-    const marketplaceProvider = "walmart";
+    const marketplaceProvider = 'walmart';
     const priorityDictionary = {};
     const connector = require(`../../server/components/connect/${marketplaceProvider}`);
     const syncManagerMaster = require(`../../server/components/background-tasks/sync-manager/dequeue`);

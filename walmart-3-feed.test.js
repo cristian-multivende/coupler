@@ -16,8 +16,8 @@ i18n.configure({
 (async () => {
   try {
 
-    let marketplaceProvider = "walmart";
-    let MarketplaceConnectionId = "2ec82948-5e67-4ae9-af6d-facec2999fd3";
+    let marketplaceProvider = 'walmart';
+    let MarketplaceConnectionId = '';
 
     let priorityDictionary = {};
     let connector = require(`../../server/components/connect/${marketplaceProvider}`);
@@ -39,7 +39,7 @@ i18n.configure({
 
     let scheduledJob = auxMarketplaceSyncManagerAsync.scheduledJobs[namespace][jobName];
     await scheduledJob.perform({ MarketplaceConnectionId, interval: "1 minute" });
-    
+
     console.log("END OF FEED RESOLUTION");
   } catch (error) {
     console.log(error.stack);
@@ -49,28 +49,4 @@ i18n.configure({
 /*
 Borrar los
 updateAttributes de "server/components/connect/exito/hanlde-notifications-manager.js"
-
-en "server/components/background-tasks/sync-manager/core/marketplace-sync-manager-async/marketplace-sync-manager-async.js"
-Comentar la línea 57.
-Cambiar la línea 62 a “true”.
-
-en "server/components/connect/exito/exito-client.js"
-Comentar los "updateAttributes"
 */
-
-
-// {
-//   _id: ObjectId('66d77579ebbde027071d0aa6'),
-//   collectionAvailability: 'open',
-//   ttl: ISODate('2024-09-04T20:45:45.874Z'),
-//   synchronizationStatus: 'pending',
-//   tags: '',
-//   status: 'created',
-//   CreatedById: '55b2521d-c3fd-4c64-af08-926849a9ca04',
-//   UpdatedById: '55b2521d-c3fd-4c64-af08-926849a9ca04',
-//   MarketplaceConnectionId: '0fba8f2f-8e11-4b90-b235-d2635596dd23',
-//   MerchantId: '1b4bf3da-ef77-4a7f-b9d2-db158e43b120',
-//   createdAt: ISODate('2024-09-03T20:45:45.880Z'),
-//   updatedAt: ISODate('2024-09-03T20:45:45.880Z'),
-//   __v: 0
-// }

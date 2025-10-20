@@ -16,8 +16,8 @@ i18n.configure({
 (async () => {
   try {
 
-    let marketplaceProvider = "walmart";
-    let MarketplaceConnectionId = "2ec82948-5e67-4ae9-af6d-facec2999fd3";
+    let marketplaceProvider = 'walmart';
+    let MarketplaceConnectionId = '';
 
     let priorityDictionary = {};
     let connector = require(`../../server/components/connect/${marketplaceProvider}`);
@@ -39,13 +39,9 @@ i18n.configure({
 
     let scheduledJob = auxMarketplaceSyncManagerAsync.scheduledJobs[namespace][jobName];
     await scheduledJob.perform({ MarketplaceConnectionId, interval: "1 minute" });
-    
+
     console.log("END OF SEND COLLECTION");
   } catch (error) {
     console.log(error.stack);
   }
 })();
-
-/*
-
-*/
