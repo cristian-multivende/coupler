@@ -1,7 +1,6 @@
 import {
   MarketplaceConnection
 } from '../../server/sqldb/index';
-import config from '../../server/config/environment';
 import * as crypto from '../../server/utils/crypto';
 
 //
@@ -10,13 +9,13 @@ import ParisAPIClient from '../../server/components/connect/paris-v2/paris-clien
 
 (async () => {
   try {
-  console.log("Inicio paris-client.test");
+    console.log("Inicio paris-client.test");
 
-  //
+    //
     const marketplaceConnection = await MarketplaceConnection.findOne({
       where: {
-        MerchantId: '6f7b58ab-c802-445a-a2b1-44d4ada1ac83',
-        _id: '8c8dcbe9-ffab-4493-81b3-865d90a7c9a2',
+        MerchantId: '',
+        _id: '',
       },
       raw: true,
       nest: true
@@ -34,12 +33,15 @@ import ParisAPIClient from '../../server/components/connect/paris-v2/paris-clien
       country,
       apiKey,
       accessToken,
-      marketplaceConnectionId
+      marketplaceConnectionId,
     );
-    
-    const response = await parisAPIClient.getAttributesByFamily(familyId, null);
+
+    const familyId = '';
+
+    const response = await parisAPIClient.getAttributesByProduct(familyId, null);
 
     console.log('Respuesta:');
+    console.log(response);
     console.log(JSON.stringify(response, null, 2));
     //
 
